@@ -24,7 +24,7 @@ def reboot():
   # Reboot immediately without checking whether operations are in progress
   os.system('systemctl reboot -i')
 
-schedule.every().day.at(WHEN).do(reboot)
+schedule.every().day.at(when).do(reboot)
 
 while True:
   schedule.run_pending()
