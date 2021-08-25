@@ -8,6 +8,7 @@ import os
 import sys
 import schedule
 import time
+from datetime import datetime
 
 def get_from_env(v, d):
   if v in os.environ and '' != os.environ[v]:
@@ -19,10 +20,10 @@ def get_from_env(v, d):
 when = get_from_env('WHEN', '03:00')
 
 def reboot():
-  print("Rebooting...")
+  print("Rebooting... (" + datetime.now().strftime("%Y-%b-%d %H:%M:%S") + ")")
   sys.stdout.flush() 
   # Reboot immediately without checking whether operations are in progress
-  os.system('systemctl reboot -i')
+  os.system('/bin/systemctl reboot -i')
 
 schedule.every().day.at(when).do(reboot)
 

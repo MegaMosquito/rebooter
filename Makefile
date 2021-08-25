@@ -18,6 +18,8 @@ dev: stop build
 	  --privileged \
 	  --cap-add CAP_SYS_BOOT \
 	  -v /bin/systemctl:/bin/systemctl \
+	  -v /lib/ld-linux-armhf.so.3:/lib/ld-linux-armhf.so.3 \
+	  -v /usr/lib/arm-linux-gnueabihf:/usr/lib/arm-linux-gnueabihf \
 	  -v /sys/fs/cgroup:/sys/fs/cgroup:ro \
 	  -v /var/run/systemd:/var/run/systemd \
 	  -v /var/run/dbus:/var/run/dbus \
@@ -32,6 +34,8 @@ run: stop
 	  --privileged \
 	   --cap-add CAP_SYS_BOOT \
 	  -v /bin/systemctl:/bin/systemctl \
+	  -v /lib/ld-linux-armhf.so.3:/lib/ld-linux-armhf.so.3 \
+	  -v /usr/lib/arm-linux-gnueabihf:/usr/lib/arm-linux-gnueabihf \
 	  -v /sys/fs/cgroup:/sys/fs/cgroup:ro \
 	  -v /var/run/systemd:/var/run/systemd \
 	  -v /var/run/dbus:/var/run/dbus \
@@ -57,6 +61,8 @@ test: stop
 	  --privileged \
 	   --cap-add CAP_SYS_BOOT \
 	  -v /bin/systemctl:/bin/systemctl \
+	  -v /lib/ld-linux-armhf.so.3:/lib/ld-linux-armhf.so.3 \
+	  -v /usr/lib/arm-linux-gnueabihf:/usr/lib/arm-linux-gnueabihf \
 	  -v /sys/fs/cgroup:/sys/fs/cgroup:ro \
 	  -v /var/run/systemd:/var/run/systemd \
 	  -v /var/run/dbus:/var/run/dbus \
