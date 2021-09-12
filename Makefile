@@ -6,6 +6,12 @@ VERSION:="1.0.0"
 # When to do the daily reboot
 WHEN:="03:00"
 
+# Which interface to monitor
+INTERFACE:=wlan0
+
+# The host to ping to check connectivity
+GATEWAY:=$(word 3, $(shell sh -c "ip route | grep default"))
+
 default: build run
 
 build:
@@ -14,8 +20,14 @@ build:
 dev: stop build
 	docker run -it -v `pwd`:/outside \
 	  -e WHEN="${WHEN}" \
+	  -e INTERFACE="${INTERFACE}" \
+	  -e GATEWAY="${GATEWAY}" \
 	  --name ${NAME} \
 	  --privileged \
+	  --cap-add CAP_NET_ADMIN \
+	  -v /usr/bin/ping:/usr/bin/ping \
+	  -v /usr/sbin/ifup:/usr/sbin/ifup \
+	  -v /usr/sbin/ifdown:/usr/sbin/ifdown \
 	  --cap-add CAP_SYS_BOOT \
 	  -v /bin/systemctl:/bin/systemctl \
 	  -v /lib/ld-linux-armhf.so.3:/lib/ld-linux-armhf.so.3 \
@@ -29,9 +41,15 @@ dev: stop build
 run: stop
 	docker run -d \
 	  -e WHEN="${WHEN}" \
+	  -e INTERFACE="${INTERFACE}" \
+	  -e GATEWAY="${GATEWAY}" \
 	  --name ${NAME} \
 	  --restart unless-stopped \
 	  --privileged \
+	  --cap-add CAP_NET_ADMIN \
+	  -v /usr/bin/ping:/usr/bin/ping \
+	  -v /usr/sbin/ifup:/usr/sbin/ifup \
+	  -v /usr/sbin/ifdown:/usr/sbin/ifdown \
 	   --cap-add CAP_SYS_BOOT \
 	  -v /bin/systemctl:/bin/systemctl \
 	  -v /lib/ld-linux-armhf.so.3:/lib/ld-linux-armhf.so.3 \
@@ -59,6 +77,10 @@ test: stop
 	  --name ${NAME} \
 	  --restart unless-stopped \
 	  --privileged \
+	  --cap-add CAP_NET_ADMIN \
+	  -v /usr/bin/ping:/usr/bin/ping \
+	  -v /usr/sbin/ifup:/usr/sbin/ifup \
+	  -v /usr/sbin/ifdown:/usr/sbin/ifdown \
 	   --cap-add CAP_SYS_BOOT \
 	  -v /bin/systemctl:/bin/systemctl \
 	  -v /lib/ld-linux-armhf.so.3:/lib/ld-linux-armhf.so.3 \
